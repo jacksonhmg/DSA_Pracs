@@ -1,6 +1,7 @@
+import java.io.*;
 import java.util.*;
 
-public class DSALinkedList implements Iterable
+public class DSALinkedList implements Iterable, Serializable
 {
 	
 
@@ -168,5 +169,42 @@ public class DSALinkedList implements Iterable
 			tail = tail.getPrev();
 		}
 		return nodeValue;
+	}
+
+	public void save(DSALinkedList objToSave, String filename)
+	{
+		FileOutputStream fileStrm;
+		ObjectOutputStream objStrm;
+
+		try
+		{
+			fileStrm = new FileOutputStream(filename);
+			objStrm = new ObjectOutputStream(fileStrm);
+			objStrm.writeObject(objToSave);
+
+			objStrm.close();
+		} catch(Exception e){
+			throw new IllegalArgumentException("Unable to save object to file"); 
+		}
+	}
+
+	public DSALinkedList load(String filename) throws IllegalArgumentException
+	{
+		FileInputStream fileStrm;
+ 		ObjectInputStream objStrm;
+ 		DSALinkedList inObj = null;
+		try {
+		fileStrm = new FileInputStream(filename);
+		objStrm = new ObjectInputStream(fileStrm); 
+		inObj = (DSALinkedList)objStrm.readObject(); 
+		objStrm.close();
+		}
+		catch (ClassNotFoundException e) {
+		System.out.println("Class ContainerClass not found" + e.getMessage());
+		}
+		catch (Exception e) {
+		throw new IllegalArgumentException("Unable to load object from file");
+		}
+		return inObj;
 	}
 }
