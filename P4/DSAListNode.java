@@ -2,6 +2,7 @@ public class DSAListNode
 {
 	private Object value;
 	private DSAListNode next;
+	private DSAListNode prev;
 
 	public DSAListNode(Object inValue)
 	{
@@ -27,5 +28,15 @@ public class DSAListNode
 	public void setNext(DSAListNode newNext)
 	{
 		next = newNext;
+	}
+
+	public DSAListNode getPrev()
+	{
+		return prev;
+	}
+
+	public void setPrev(DSAListNode newPrev)
+	{
+		prev = newPrev;
 	}
 }

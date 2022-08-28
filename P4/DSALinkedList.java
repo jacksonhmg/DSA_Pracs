@@ -6,7 +6,7 @@ public class DSALinkedList implements Iterable
 
 	public Iterator iterator()
 	{
-		return new MyLinkedListIterator(this);
+		return new DSALinkedListIterator(this);
 	}
 
 	private class DSALinkedListIterator implements Iterator
@@ -49,10 +49,12 @@ public class DSALinkedList implements Iterable
 
 
 	private DSAListNode head;
+	private DSAListNode tail;
 
 	public DSALinkedList()
 	{
 		head = null;
+		tail = null;
 	}
 
 	public void insertFirst(Object newValue)
@@ -61,10 +63,12 @@ public class DSALinkedList implements Iterable
 		if(isEmpty())
 		{
 			head = newNd;
+			tail = newNd;
 		}
 		else
 		{
 			newNd.setNext(head);
+			head.setPrev(newNd);
 			head = newNd;
 		}
 	}
@@ -75,15 +79,13 @@ public class DSALinkedList implements Iterable
 		if(isEmpty())
 		{
 			head = newNd;
+			tail = newNd;
 		}
 		else
 		{
-			DSAListNode currNd = head;
-			while(currNd.getNext() != null)
-			{
-				currNd = currNd.getNext();
-			}
-			currNd.setNext(newNd);
+			tail.setNext(newNd);
+			newNd.setPrev(tail);
+			tail = newNd;
 		}
 
 	}
@@ -106,7 +108,7 @@ public class DSALinkedList implements Iterable
 	{
 		if(isEmpty())
 		{
-			throw new IllegalArgumentException("NAH!");
+			throw new IllegalArgumentException("List is empty so cannot peek first");
 		}
 		else
 		{
@@ -116,21 +118,14 @@ public class DSALinkedList implements Iterable
 
 	public Object peekLast()
 	{
-		Object nodeValue;
 		if(isEmpty())
 		{
-			throw new IllegalArgumentException("NAH!");
+			throw new IllegalArgumentException("List is empty so cannot peek last");
 		}
 		else
 		{
-			DSAListNode currNd = head;
-			while(currNd.getNext() != null)
-			{
-				currNd = currNd.getNext();
-			}
-			nodeValue = currNd.getValue();
+			return tail.getValue();
 		}
-		return nodeValue;
 	}
 
 	public Object removeFirst()
@@ -138,7 +133,13 @@ public class DSALinkedList implements Iterable
 		Object nodeValue;
 		if(isEmpty())
 		{
-			throw new IllegalArgumentException("NAH!");
+			throw new IllegalArgumentException("List is empty so cannot remove first");
+		}
+		else if(head.getNext() == null)
+		{
+			nodeValue = head.getValue();
+			head = null;
+			tail = null;
 		}
 		else
 		{
@@ -153,24 +154,18 @@ public class DSALinkedList implements Iterable
 		Object nodeValue;
 		if(isEmpty())
 		{
-			throw new IllegalArgumentException("NAH!");
+			throw new IllegalArgumentException("List is empty so cannot remove last");
 		}
 		else if(head.getNext() == null)
 		{
 			nodeValue = head.getValue();
 			head = null;
+			tail = null;
 		}
 		else
 		{
-			DSAListNode prevNd = null;
-			DSAListNode currNd = head;
-			while(currNd.getNext() != null)
-			{
-				prevNd = currNd;
-				currNd = currNd.getNext();
-			}
-			prevNd.setNext(null);
-			nodeValue = currNd.getValue();
+			nodeValue = tail.getValue();
+			tail = tail.getPrev();
 		}
 		return nodeValue;
 	}

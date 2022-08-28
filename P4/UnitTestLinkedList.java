@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 import java.io.*;
+import java.util.Iterator;
 
 public class UnitTestLinkedList
 {
@@ -19,6 +20,7 @@ public class UnitTestLinkedList
         DSALinkedList ll = null;
         String sTestString;
         Object nodeValue;
+        Iterator ill;
 
 //---------------------------------------------------------------------------
 
@@ -104,7 +106,7 @@ public class UnitTestLinkedList
             System.out.println("passed");
         } catch(Exception e) { System.out.println("FAILED"); }
 
-        // TEST 7 : PEEK LAST
+        // TEST 7 : PEEK FIRST
         try {
             iNumTests++;
             System.out.print("Testing peekFirst(): ");
@@ -150,6 +152,58 @@ public class UnitTestLinkedList
             iNumPassed++;
             System.out.println("passed");
         } catch(Exception e) { System.out.println("FAILED"); }
+
+
+        // TEST 11 : Iterators next
+        try {
+            iNumTests++;
+            System.out.print("Testing iterator's next: ");
+            ill = ll.iterator();
+            sTestString = (String)ill.next();
+            if(sTestString != "xyz"){
+                throw new IllegalArgumentException("FAILED.");
+            }
+            sTestString = (String)ill.next();
+            if(sTestString != "jkl"){
+                throw new IllegalArgumentException("FAILED.");
+            }
+            sTestString = (String)ill.next();
+            if(sTestString != "abc"){
+                throw new IllegalArgumentException("FAILED.");
+            }
+            iNumPassed++;
+            System.out.println("passed");
+        } catch(Exception e) { System.out.println("FAILED"); }
+
+        // TEST 12 : Iterators hasNext
+        try {
+            iNumTests++;
+            System.out.print("Testing iterator's hasNext: ");
+            ill = ll.iterator();
+            if(!(ill.hasNext())){
+                throw new IllegalArgumentException("FAILED.");
+            }
+            ill.next();
+            ill.next();
+            ill.next();
+            if(ill.hasNext()){
+                throw new IllegalArgumentException("FAILED.");
+            }
+            iNumPassed++;
+            System.out.println("passed");
+        } catch(Exception e) { System.out.println("FAILED"); }
+
+        // TEST 13 
+        try {
+            iNumTests++;
+            System.out.print("Testing iterator's remove: ");
+            ill = ll.iterator();
+            ill.remove();
+            System.out.println("FAILED");
+        } catch(Exception e) { 
+            iNumPassed++;
+            System.out.println("passed"); }
+
 
 //---------------------------------------------------------------------------
 
