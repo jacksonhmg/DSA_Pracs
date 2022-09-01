@@ -1,4 +1,6 @@
-public class DSAListNode
+import java.io.Serializable;
+
+public class DSAListNode implements Serializable
 {
 	private Object value;
 	private DSAListNode next;

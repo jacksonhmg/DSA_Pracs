@@ -184,7 +184,7 @@ public class DSALinkedList implements Iterable, Serializable
 
 			objStrm.close();
 		} catch(Exception e){
-			throw new IllegalArgumentException("Unable to save object to file"); 
+			throw new IllegalArgumentException("Unable to save object to file");
 		}
 	}
 

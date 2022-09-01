@@ -53,10 +53,10 @@ public class InteractiveMenu
                 break;
                 case 6:
                     System.out.println("Writing to DSALinkedList.txt");
-                    list.save(list, "DSALinkedList.xml");
+                    list.save(list, "DSALinkedList.txt");
                 break;
                 case 7:
-                    System.out.println("Loading from DSALinkedList.xml");
+                    System.out.println("Loading from DSALinkedList.txt");
                     list = list.load("DSALinkedList.txt");
                 break;
             }
