@@ -79,14 +79,14 @@ public class DSATestCases {
 
 
 
-        //DSA SHUFFLING QUEUE -------------------------------------------------------------------
+        //DSA QUEUE -------------------------------------------------------------------
 
         DSAQueue queue = null;
         iNumPassed = 0;
         iNumTests = 0;
 
         System.out.println("---------------------------------");
-        System.out.println("Testing All Shuffling Queue Features");
+        System.out.println("Testing All Queue Features");
 
         // TEST 1 : Constructor
         try

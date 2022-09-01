@@ -145,7 +145,7 @@ public class UnitTestLinkedList
         // TEST 10 : INSERT FIRST
         try {
             iNumTests++;
-            System.out.print("Testing insertFirst()");
+            System.out.print("Testing insertFirst(): ");
             ll.insertFirst("abc");
             ll.insertFirst("jkl");
             ll.insertFirst("xyz");
@@ -193,7 +193,7 @@ public class UnitTestLinkedList
             System.out.println("passed");
         } catch(Exception e) { System.out.println("FAILED"); }
 
-        // TEST 13 
+        // TEST 13 Iterator's remove
         try {
             iNumTests++;
             System.out.print("Testing iterator's remove: ");
