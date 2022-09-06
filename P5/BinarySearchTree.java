@@ -1,8 +1,9 @@
-import java.util.NoSuchElementException;
+import java.io.*;
+import java.util.*;
 
-public class BinarySearchTree
+public class BinarySearchTree implements Serializable
 {
-    private class TreeNode
+    private class TreeNode implements Serializable
     {
         private String m_key;
         private Object m_value;
@@ -128,12 +129,77 @@ public class BinarySearchTree
 
     public void delete(String key)
     {
-
+        deleteRec(key, m_root);
     }
 
-    public void display()
+    private TreeNode deleteRec(String key, TreeNode curNode)
     {
+        TreeNode updateNode = curNode;
+        if(curNode == null)
+        {
+            throw new NoSuchElementException("Key " + key + " not found");
+        }
+        else if(key.equals(curNode.getKey()))
+        {
+            updateNode = deleteNode(key, curNode);
+        }
+        else if(key.compareTo(curNode.getKey()) < 0)
+        {
+            curNode.setLeft(deleteRec(key, curNode.getLeft()));
+        }
+        else
+        {
+            curNode.setRight(deleteRec(key, curNode.getRight()));
+        }
+        return updateNode;
+    }
 
+    private TreeNode deleteNode(String key, TreeNode delNode)
+    {
+        TreeNode updateNode = null;
+        if(delNode.getLeft() == null && delNode.getRight() == null)
+        {
+            updateNode = null;
+        }
+        else if(delNode.getLeft() != null && delNode.getRight() == null)
+        {
+            updateNode = delNode.getLeft();
+        }
+        else if(delNode.getLeft() == null && delNode.getRight() != null)
+        {
+            updateNode = delNode.getRight();
+        }
+        else
+        {
+            updateNode = promoteSuccessor(delNode.getRight());
+            if(updateNode != delNode.getRight())
+            {
+                updateNode.setRight(delNode.getRight());
+            }
+            updateNode.setLeft(delNode.getLeft());
+        }
+        return updateNode;
+    }
+
+    private TreeNode promoteSuccessor(TreeNode currNode)
+    {
+        TreeNode successor = currNode;
+        if(currNode.getLeft() == null)
+        {
+            successor = currNode;
+        }
+        else
+        {
+            if(currNode.getLeft() != null)
+            {
+                successor = promoteSuccessor(currNode.getLeft());
+                if(successor == currNode.getLeft())
+                {
+                    currNode.setLeft(successor.getRight());
+                }
+            }
+        }
+        return successor;
     }
 
     public int min()
@@ -166,7 +232,7 @@ public class BinarySearchTree
         int minKey;
         if(currNode.getRight() != null)
         {
-            minKey = minRec(currNode.getRight());
+            minKey = maxRec(currNode.getRight());
         }
         else
         {
@@ -179,6 +245,11 @@ public class BinarySearchTree
     public int height()
     {
         return heightRec(m_root);
+    }
+
+    public int height(TreeNode node)
+    {
+        return heightRec(node);
     }
 
     private int heightRec(TreeNode currNode)
@@ -209,36 +280,21 @@ public class BinarySearchTree
     
     public double balance()
     {
-        return balanceRec(m_root);
-    }
-
-    private double balanceRec(TreeNode currNode)
-    {
-        double iLeftHt, iRightHt, percentage;
-        iLeftHt = 0;
-        iRightHt = 0;
-        percentage = 0;
-        if(currNode != null)
+        TreeNode lNode = m_root.getLeft();
+        TreeNode rNode = m_root.getRight();
+        int lHeight, rHeight;
+        double balance;
+        lHeight = height(lNode);
+        rHeight = height(rNode);
+        if(lHeight <= rHeight)
         {
-           iLeftHt = balanceRec(currNode.getLeft());
-           iRightHt = balanceRec(currNode.getRight());
-           
-           // Get highest of left vs right branches
-           if(iLeftHt > iRightHt)
-           {
-            percentage = iRightHt / iLeftHt;
-           }
-           else
-           {
-            percentage = iLeftHt / iRightHt;
-           }
+            balance = 100 * (Double.valueOf(lHeight)) / (Double.valueOf(rHeight));
         }
-        return percentage; 
-    }
-
-    public void traverseTreeRec(TreeNode currNode)
-    {
-
+        else
+        {
+            balance = 100 * (Double.valueOf(rHeight)) / (Double.valueOf(lHeight));
+        }
+        return balance;
     }
 
     public void inOrderTraverse()
@@ -248,14 +304,90 @@ public class BinarySearchTree
 
     private void inOrderRec(TreeNode currNode)
     {
-        if(currNode.getLeft() != null)
+        if(currNode == null)
+        {
+            return;
+        }
+        else
         {
             inOrderRec(currNode.getLeft());
-        }
-        System.out.println(currNode.getKey());
-        if(currNode.getRight() != null)
-        {
+            System.out.println(currNode.getKey());
             inOrderRec(currNode.getRight());
         }
     }
+
+    public void preOrderTraverse()
+    {
+        preOrderRec(m_root);
+    }
+
+    private void preOrderRec(TreeNode currNode)
+    {
+        if(currNode == null)
+        {
+            return;
+        }
+        else
+        {
+            System.out.println(currNode.getKey());
+            preOrderRec(currNode.getLeft());
+            preOrderRec(currNode.getRight());
+        }
+    }
+
+    public void postOrderTraverse()
+    {
+        postOrderRec(m_root);
+    }
+
+    private void postOrderRec(TreeNode currNode)
+    {
+        if(currNode == null)
+        {
+            return;
+        }
+        else
+        {
+            postOrderRec(currNode.getLeft());
+            postOrderRec(currNode.getRight());
+            System.out.println(currNode.getKey());
+        }
+    }
+
+    public void save(BinarySearchTree objToSave, String filename)
+	{
+		FileOutputStream fileStrm;
+		ObjectOutputStream objStrm;
+
+		try
+		{
+			fileStrm = new FileOutputStream(filename);
+			objStrm = new ObjectOutputStream(fileStrm);
+			objStrm.writeObject(objToSave);
+
+			objStrm.close();
+		} catch(Exception e){
+			throw new IllegalArgumentException("Unable to save object to file");
+		}
+	}
+
+	public BinarySearchTree load(String filename) throws IllegalArgumentException
+	{
+		FileInputStream fileStrm;
+ 		ObjectInputStream objStrm;
+ 		BinarySearchTree inObj = null;
+		try {
+		fileStrm = new FileInputStream(filename);
+		objStrm = new ObjectInputStream(fileStrm); 
+		inObj = (BinarySearchTree)objStrm.readObject(); 
+		objStrm.close();
+		}
+		catch (ClassNotFoundException e) {
+		System.out.println("Class ContainerClass not found" + e.getMessage());
+		}
+		catch (Exception e) {
+		throw new IllegalArgumentException("Unable to load object from file");
+		}
+		return inObj;
+	}
 }
