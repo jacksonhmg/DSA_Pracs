@@ -112,21 +112,4 @@ public class InteractiveMenu {
         return splitLine;
     }
 
-    public static void writeOneRow(String pFileName, String pInputString){
-        
-        //MAKE WRITE ONE ROW WRITE IT SO THAT IT PRINTS EACH VALUE WITH A SPACE AFTER
-        
-        
-        /*FileOutputStream fileStrm = null;
-        PrintWriter pw;
-        try {
-            fileStrm = new FileOutputStream(pFileName);
-            pw = new PrintWriter(fileStrm);
-            pw.print(pInputString + " ");
-            pw.close();
-        } catch (IOException e) {
-            System.out.println("Error in writing to file" + e.getMessage());
-        }
-    }*/
-    }
 }
