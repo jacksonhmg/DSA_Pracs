@@ -1,7 +1,9 @@
+import java.util.Iterator;
+
 public class DSAGraphVertex {
     private Object label;
     private Object value;
-    private DSALinkedList links;
+    private DSALinkedList links = new DSALinkedList();
     private DSALinkedList visited;
 
     public DSAGraphVertex(Object inLabel, Object inValue)
@@ -30,23 +32,34 @@ public class DSAGraphVertex {
         links.insertLast(vertex);
     }
 
-    public void setVisited()
+    public void setVisited(DSAGraphVertex vert)
     {
-
+        visited.insertLast(vert);
     }
 
     public void clearVisited()
     {
-
+        DSALinkedList newLL = new DSALinkedList();
+        visited = newLL;
     }
 
-    public boolean getVisited()
+    public boolean getVisited(DSAGraphVertex vert)
     {
-
+        boolean check = false;
+        Iterator ill = visited.iterator();
+        while(ill.hasNext())
+        {
+            DSAGraphVertex tVert = (DSAGraphVertex)ill.next();
+            if(tVert.getLabel() == vert.getLabel())
+            {
+                check = true;
+            }
+        }
+        return check;
     }
 
-    public String toString()
+    /*public String toString()
     {
-
-    }
+        
+    }*/
 }

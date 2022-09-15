@@ -32,7 +32,7 @@ public class DSAGraphEdge {
         return to;
     }
 
-    public boolean isDirected()
+    /*public boolean isDirected()
     {
 
     }
@@ -40,5 +40,5 @@ public class DSAGraphEdge {
     public String toString()
     {
         
-    }
+    }*/
 }
