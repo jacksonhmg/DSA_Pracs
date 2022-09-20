@@ -3,13 +3,15 @@ public class DSAGraphEdge {
     private DSAGraphVertex to;
     private Object label;
     private Object value;
+    private boolean directed;
 
-    public DSAGraphEdge(DSAGraphVertex fromVertex, DSAGraphVertex toVertex, Object inLabel, Object inValue)
+    public DSAGraphEdge(DSAGraphVertex fromVertex, DSAGraphVertex toVertex, Object inLabel, Object inValue, boolean inDirected)
     {
         from = fromVertex;
         to = toVertex;
         label = inLabel;
         value = inValue;
+        directed = inDirected;
     }
 
     public Object getLabel()
@@ -32,12 +34,12 @@ public class DSAGraphEdge {
         return to;
     }
 
-    /*public boolean isDirected()
+    public boolean isDirected()
     {
-
+        return directed;
     }
 
-    public String toString()
+    /*public String toString()
     {
         
     }*/

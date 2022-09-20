@@ -14,14 +14,17 @@ public class DSAGraph{
         }
     }
 
-    public void addEdge(Object label1, Object label2)
+    public void addEdge(Object label1, Object label2, boolean directed)
     {
-        DSAGraphEdge edge = new DSAGraphEdge(getVertex(label1), getVertex(label2), null, null);
-        DSAGraphVertex vert1 = getVertex(label1);
-        DSAGraphVertex vert2 = getVertex(label2);
-        vert1.addEdge(vert2);
-        vert2.addEdge(vert1);
-        edges.insertLast(edge);
+        if(!(hasEdge(label1, label2)))
+        {
+            DSAGraphEdge edge = new DSAGraphEdge(getVertex(label1), getVertex(label2), null, null, directed);
+            DSAGraphVertex vert1 = getVertex(label1);
+            DSAGraphVertex vert2 = getVertex(label2);
+            vert1.addEdge(vert2);
+            vert2.addEdge(vert1);
+            edges.insertLast(edge);
+        }
     }
 
     public boolean hasVertex(Object label)
@@ -39,6 +42,19 @@ public class DSAGraph{
         }
         return check;
     }
+
+    public boolean hasEdge(Object label1, Object label2)
+    {
+        DSAGraphVertex vert = getVertex(label1);
+        boolean check = false;
+        if(isAdjacent(label1, label2))
+        {
+            check = true;
+        }
+        
+        return check;
+    }
+
 
     public int getVertexCount()
     {
@@ -90,7 +106,7 @@ public class DSAGraph{
 
     public boolean isAdjacent(Object label1, Object label2)
     {
-       Iterator ill = edges.iterator();
+        Iterator ill = edges.iterator();
         DSAGraphVertex vert1 = getVertex(label1);
         DSAGraphVertex vert2 = getVertex(label2);
         boolean checker = false;
@@ -98,7 +114,7 @@ public class DSAGraph{
         {
             DSAGraphEdge edge = (DSAGraphEdge)ill.next();
 
-            if((edge.getFrom().equals(label1) && edge.getTo().equals(label2)) || (edge.getFrom().equals(label2) && edge.getTo().equals(label1)))
+            if((edge.getFrom().getLabel().equals(label1) && edge.getTo().getLabel().equals(label2)) || (edge.getFrom().getLabel().equals(label2) && edge.getTo().getLabel().equals(label1)))
             {
                 checker = true;
             }
@@ -124,22 +140,14 @@ public class DSAGraph{
             }
             System.out.println();
         }
-
     }
 
     public void displayAsMatrix()
     {
-        int count, tick;
-        count = 0;
+        int tick;
         tick = 0;
-        Iterator tILL = vertices.iterator();
-        while(tILL.hasNext())
-        {
-            count++;
-            tILL.next();
-        }
-        
-        Object[] headers = new Object[count];
+    
+        Object[] headers = new Object[getVertexCount()];
 
         System.out.print(" | ");
         Iterator ill = vertices.iterator();
@@ -151,31 +159,40 @@ public class DSAGraph{
             tick++;
             System.out.print(label + " | ");
         }
-        System.out.println("REVISIT THIS");
+        System.out.println();
 
-
-
-        //BELOW CODE COULD BE USEFUL, JUST COMMENTING OUT TO NOT CLUTTER TEST HARNESS PRINT
-
-        /*Iterator ill2 = vertices.iterator();
+        Iterator ill2 = vertices.iterator();
         while(ill2.hasNext())
         {
+            
             DSAGraphVertex vert = ((DSAGraphVertex)(ill2.next()));
             Object label = vert.getLabel();
             DSALinkedList list = vert.getAdjacent();
-            System.out.print(label + ": ");
-            Iterator ill3 = list.iterator();
-            while(ill3.hasNext())
+            System.out.print(label + "| ");
+            for(int i = 0; i < headers.length; i++)
             {
-                DSAGraphVertex vert2 = ((DSAGraphVertex)(ill3.next()));
-                Object label2 = vert2.getLabel();
-                System.out.print(label2 + " | ");
+                boolean check = false;
+                Iterator ill3 = list.iterator();
+                while(ill3.hasNext())
+                {
+                    DSAGraphVertex vert2 = ((DSAGraphVertex)(ill3.next()));
+                    Object label2 = vert2.getLabel();
+                    if(label2.equals(headers[i]))
+                    {
+                        check = true;
+                    }
+                }
+                if(check)
+                {
+                    System.out.print("1 | ");
+                }
+                else
+                {
+                    System.out.print("0 | ");
+                }
             }
             System.out.println();
-        }*/
-
-
-
+        }
     }
 
 
@@ -186,9 +203,61 @@ public class DSAGraph{
         Iterator clearILL = vertices.iterator();
         while(clearILL.hasNext())
         {
-            DSAGraphVertex wipeV = (DSAGraphVertex)clearILL.next();
-            wipeV.clearVisited();
+            DSAGraphVertex v = (DSAGraphVertex)clearILL.next();
+            v.clearVisited();
         }
+        DSAGraphVertex v = (DSAGraphVertex)vertices.head.getValue();
+        v.setVisited();
+        Q.enqueue(v);
+        while(!(Q.isEmpty()))
+        {
+            v = (DSAGraphVertex)Q.dequeue();
+            Iterator ill = (v.getAdjacent()).iterator();
+            while(ill.hasNext())
+            {
+                DSAGraphVertex w = (DSAGraphVertex)ill.next();
+                if(!(w.getVisited()))
+                {
+                    T.enqueue(v);
+                    T.enqueue(w);
+                    w.setVisited();
+                    Q.enqueue(w);
+                }
+            }
+        }
+    }
+
+    public void depthFirstSearch()
+    {
+        DSAQueue T = new DSAQueue();
+        DSAStack S = new DSAStack();
+        Iterator clearILL = vertices.iterator();
+        while(clearILL.hasNext())
+        {
+            DSAGraphVertex v = (DSAGraphVertex)clearILL.next();
+            v.clearVisited();
+        }
+        DSAGraphVertex v = (DSAGraphVertex)vertices.head.getValue();
+        v.setVisited();
+        S.push(v);
+        while(!(S.isEmpty()))
+        {
+            Iterator ill = (v.getAdjacent()).iterator();
+            while(ill.hasNext())
+            {
+                DSAGraphVertex w = (DSAGraphVertex)ill.next();
+                if(!(w.getVisited()))
+                {
+                    T.enqueue(v);
+                    T.enqueue(w);
+                    w.setVisited();
+                    S.push(w);
+                    v = w;
+                }
+            }
+            v = (DSAGraphVertex)S.pop();
+        }
+
     }
 
 }

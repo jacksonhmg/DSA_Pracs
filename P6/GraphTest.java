@@ -9,17 +9,18 @@ public class GraphTest {
         graph.addVertex('A', 'A');
         graph.addVertex('B', 'B');
         graph.addVertex('C', 'C');
-        graph.addEdge('A', 'B');
-        graph.addEdge('B', 'C');
-        graph.addEdge('C', 'A');
+        graph.addEdge('A', 'B',false);
+        graph.addEdge('B', 'C',false);
+        graph.addEdge('C', 'A',false);
         graph.displayAsList();
         System.out.println();
         graph.displayAsMatrix();
-        
+        System.out.println();
+
         //reading from file for graph
         
         try{
-            File myObj = new File("prac6_1.al");
+            File myObj = new File("prac6_2.al");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine())
             {
@@ -27,7 +28,7 @@ public class GraphTest {
                 String[] sArray = processLine(data);
                 graph2.addVertex(sArray[0], sArray[0]);
                 graph2.addVertex(sArray[1], sArray[1]);
-                graph2.addEdge(sArray[0], sArray[1]);
+                graph2.addEdge(sArray[0], sArray[1],false);
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -35,6 +36,8 @@ public class GraphTest {
             e.printStackTrace();
         }
         graph2.displayAsList();
+        System.out.println();
+        graph2.displayAsMatrix();
     }
 
     public static String[] processLine(String csvRow)

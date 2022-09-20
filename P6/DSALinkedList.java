@@ -54,7 +54,7 @@ public class DSALinkedList implements Iterable, Serializable
 
 
 
-	private DSAListNode head;
+	public DSAListNode head;
 	private DSAListNode tail;
 
 	public DSALinkedList()
