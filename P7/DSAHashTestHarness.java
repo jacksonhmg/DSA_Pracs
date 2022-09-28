@@ -17,7 +17,7 @@ public class DSAHashTestHarness {
         try {
             iNumTests++;
             hTable.put("name", "Jackson Mowatt Gok");
-            hTable.put("dddu", "t2");
+            hTable.put("dddu", "name two");
             iNumPassed++;
             System.out.println("passed");
         } catch(Exception e) 
@@ -30,7 +30,7 @@ public class DSAHashTestHarness {
         // TEST 2 : get
         try {
             iNumTests++;
-            System.out.print(hTable.get("name"));
+            System.out.println(hTable.get("name"));
             System.out.print(hTable.get("dddu"));
             iNumPassed++;
             System.out.println("\npassed");
@@ -89,10 +89,10 @@ public class DSAHashTestHarness {
             {
                 throw new IllegalArgumentException();
             }
-            /*if((hTable.hasKey("dddu")))
+            if((hTable.hasKey("dddu")))
             {
                 throw new IllegalArgumentException();
-            }*/
+            }
             iNumPassed++;
             System.out.println("passed");
         } catch(Exception e) { System.out.println("FAILED" + e); }

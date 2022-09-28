@@ -1,6 +1,5 @@
 public class DSAHashTable {
-    private DSAHashEntry[] hashArray;
-    private int count;
+    public DSAHashEntry[] hashArray;
 
     public DSAHashTable(int tablesize)
     {
@@ -54,10 +53,10 @@ public class DSAHashTable {
         for(int i = 0; i<key.length(); i++)
         {
             hashIdx = (31* hashIdx) + key.charAt(i);
-            System.out.print(" " + hashIdx);
+            //System.out.print(" Hash: " + hashIdx);
         }
         int toReturn = (int)(hashIdx % hashArray.length);
-        System.out.print(" " + hashIdx % hashArray.length);
+        //System.out.print(" HashIdx%hAL: " + hashIdx % hashArray.length);
         return toReturn;
     }
 
@@ -68,7 +67,7 @@ public class DSAHashTable {
         {
             key += (int)inKey.charAt(i);
         }
-        int max_step = 7;
+        int max_step = 13;
         int hashStep = max_step - (key % max_step);
         return hashStep;
     }
@@ -85,8 +84,9 @@ public class DSAHashTable {
             if(hashArray[hashIdx].state == 0)
             {
                 giveUp = true;
+                //System.out.println("\nState equals zero");
             }
-            else if(hashArray[hashIdx].key == inKey)
+            else if(hashArray[hashIdx].key.equals(inKey))
             {
                 found = true;
             }
@@ -100,6 +100,7 @@ public class DSAHashTable {
                 if(hashIdx == origIdx)
                 {
                     giveUp = true;
+                    //System.out.println("\n== orig");
                 }
             }
         }
@@ -123,7 +124,7 @@ public class DSAHashTable {
             {
                 giveUp = true;
             }
-            else if(hashArray[hashIdx].key == inKey)
+            else if(hashArray[hashIdx].key.equals(inKey))
             {
                 found = true;
             }
@@ -146,7 +147,7 @@ public class DSAHashTable {
 
     public void put(String inKey, Object inValue)
     {
-        System.out.println(" putting : ");
+        //System.out.println(" putting : ");
         int hashIdx = hash(inKey);
         int origIdx = hashIdx;
         while((hashArray[hashIdx].state != 0) && (hashArray[hashIdx].state != 2))
@@ -156,6 +157,7 @@ public class DSAHashTable {
             {
                 hashIdx = hashIdx - hashArray.length;
             }
+            //System.out.println(hashIdx);
             if(hashIdx == origIdx)
             {
                 throw new IllegalArgumentException("Cannot insert, hashIdx == origIdx");
@@ -177,7 +179,7 @@ public class DSAHashTable {
             {
                 giveUp = true;
             }
-            else if(hashArray[hashIdx].key == inKey)
+            else if(hashArray[hashIdx].key.equals(inKey))
             {
                 found = true;
             }
@@ -203,7 +205,6 @@ public class DSAHashTable {
             hashArray[hashIdx].key = "";
             hashArray[hashIdx].value = null;
             hashArray[hashIdx].state = 2;
-
         }
     }
 
@@ -247,7 +248,7 @@ public class DSAHashTable {
         DSAHashEntry[] tempArr = hashArray;
         int actualSize = findNextPrime((hashArray.length)*2);
         hashArray = new DSAHashEntry[actualSize];
-        System.out.print(" " + hashArray.length + "!!!");
+        //System.out.print(" GROWN TO " + hashArray.length + "!!!");
         for(int i = 0; i<actualSize;i++)
         {
             hashArray[i] = new DSAHashEntry();
@@ -266,7 +267,7 @@ public class DSAHashTable {
         DSAHashEntry[] tempArr = hashArray;
         int actualSize = findNextPrime((hashArray.length)/2);
         hashArray = new DSAHashEntry[actualSize];
-        System.out.print(" " + hashArray.length + "!!!");
+        //System.out.print(" SHRUNK TO " + hashArray.length + "!!!");
         for(int i = 0; i<actualSize;i++)
         {
             hashArray[i] = new DSAHashEntry();
