@@ -49,13 +49,16 @@ public class DSAHashTable {
 
     public int hash(String key)
     {
-        int hashIdx = 0;
+        long hashIdx = 0;
 
         for(int i = 0; i<key.length(); i++)
         {
             hashIdx = (31* hashIdx) + key.charAt(i);
+            System.out.print(" " + hashIdx);
         }
-        return hashIdx % hashArray.length;
+        int toReturn = (int)(hashIdx % hashArray.length);
+        System.out.print(" " + hashIdx % hashArray.length);
+        return toReturn;
     }
 
     public int stepHash(String inKey)
@@ -65,7 +68,7 @@ public class DSAHashTable {
         {
             key += (int)inKey.charAt(i);
         }
-        int max_step = 13;
+        int max_step = 7;
         int hashStep = max_step - (key % max_step);
         return hashStep;
     }
@@ -90,6 +93,10 @@ public class DSAHashTable {
             else
             {
                 hashIdx = (hashIdx + stepHash(inKey));
+                if(hashIdx >= hashArray.length)
+                {
+                    hashIdx = hashIdx - hashArray.length;
+                }
                 if(hashIdx == origIdx)
                 {
                     giveUp = true;
@@ -123,6 +130,10 @@ public class DSAHashTable {
             else
             {
                 hashIdx = (hashIdx + stepHash(inKey));
+                if(hashIdx >= hashArray.length)
+                {
+                    hashIdx = hashIdx - hashArray.length;
+                }
                 if(hashIdx == origIdx)
                 {
                     giveUp = true;
@@ -135,19 +146,16 @@ public class DSAHashTable {
 
     public void put(String inKey, Object inValue)
     {
-        if(shouldResize() == 1)
-        {
-            growResize();
-        }
-        else if(shouldResize() == 2)
-        {
-            shrinkResize();
-        }
+        System.out.println(" putting : ");
         int hashIdx = hash(inKey);
         int origIdx = hashIdx;
-        while((hashArray[hashIdx].state != 0) || (hashArray[hashIdx].state != 2))
+        while((hashArray[hashIdx].state != 0) && (hashArray[hashIdx].state != 2))
         {
             hashIdx = (hashIdx + stepHash(inKey));
+            if(hashIdx >= hashArray.length)
+            {
+                hashIdx = hashIdx - hashArray.length;
+            }
             if(hashIdx == origIdx)
             {
                 throw new IllegalArgumentException("Cannot insert, hashIdx == origIdx");
@@ -158,14 +166,6 @@ public class DSAHashTable {
 
     public void remove(String inKey, Object inValue)
     {
-        if(shouldResize() == 1)
-        {
-            growResize();
-        }
-        else if(shouldResize() == 2)
-        {
-            shrinkResize();
-        }
         int hashIdx = hash(inKey);
         int origIdx = hashIdx;
         boolean found = false;
@@ -184,6 +184,10 @@ public class DSAHashTable {
             else
             {
                 hashIdx = (hashIdx + stepHash(inKey));
+                if(hashIdx >= hashArray.length)
+                {
+                    hashIdx = hashIdx - hashArray.length;
+                }
                 if(hashIdx == origIdx)
                 {
                     giveUp = true;
@@ -202,6 +206,20 @@ public class DSAHashTable {
 
         }
     }
+
+
+    public void resizeCheck()
+    {
+        if(shouldResize() == 1)
+        {
+            growResize();
+        }
+        else if(shouldResize() == 2)
+        {
+            shrinkResize();
+        }
+    }
+
 
     public int shouldResize()
     {
@@ -229,6 +247,11 @@ public class DSAHashTable {
         DSAHashEntry[] tempArr = hashArray;
         int actualSize = findNextPrime((hashArray.length)*2);
         hashArray = new DSAHashEntry[actualSize];
+        System.out.print(" " + hashArray.length + "!!!");
+        for(int i = 0; i<actualSize;i++)
+        {
+            hashArray[i] = new DSAHashEntry();
+        }
         for(int i = 0; i<tempArr.length;i++)
         {
             if(tempArr[i].state == 1)
@@ -243,6 +266,11 @@ public class DSAHashTable {
         DSAHashEntry[] tempArr = hashArray;
         int actualSize = findNextPrime((hashArray.length)/2);
         hashArray = new DSAHashEntry[actualSize];
+        System.out.print(" " + hashArray.length + "!!!");
+        for(int i = 0; i<actualSize;i++)
+        {
+            hashArray[i] = new DSAHashEntry();
+        }
         for(int i = 0; i<tempArr.length;i++)
         {
             if(tempArr[i].state == 1)
