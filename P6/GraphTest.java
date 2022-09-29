@@ -6,7 +6,7 @@ public class GraphTest {
     {
         DSAGraph graph = new DSAGraph();
         DSAGraph graph2 = new DSAGraph();
-        graph.addVertex('A', 'A');
+        /*graph.addVertex('A', 'A');
         graph.addVertex('B', 'B');
         graph.addVertex('C', 'C');
         graph.addEdge('A', 'B',false);
@@ -15,7 +15,7 @@ public class GraphTest {
         graph.displayAsList();
         System.out.println();
         graph.displayAsMatrix();
-        System.out.println();
+        System.out.println();*/
 
         //reading from file for graph
         
@@ -38,6 +38,10 @@ public class GraphTest {
         graph2.displayAsList();
         System.out.println();
         graph2.displayAsMatrix();
+        graph2.breadthFirstSearch();
+        System.out.println();
+        System.out.println();
+        graph2.depthFirstSearch();
     }
 
     public static String[] processLine(String csvRow)

@@ -212,6 +212,7 @@ public class DSAGraph{
         while(!(Q.isEmpty()))
         {
             v = (DSAGraphVertex)Q.dequeue();
+            System.out.println(v.getLabel());
             Iterator ill = (v.getAdjacent()).iterator();
             while(ill.hasNext())
             {
@@ -256,6 +257,7 @@ public class DSAGraph{
                 }
             }
             v = (DSAGraphVertex)S.pop();
+            System.out.println(v.getLabel());
         }
 
     }
