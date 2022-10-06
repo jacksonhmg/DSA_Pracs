@@ -1,8 +1,9 @@
-import java.util.Currency;
+import java.util.*;
+import java.io.*;
 
 public class DSAHeap 
 {
-    private DSAHeapEntry[] heap;
+    private DSAHeapEntry[] heap = new DSAHeapEntry[0];
     private int count;
 
     public void add(int priority, Object value)
@@ -14,11 +15,24 @@ public class DSAHeap
         }
         newHeap[newHeap.length-1] = new DSAHeapEntry(priority, value);
         newHeap = trickleUp(newHeap, newHeap.length-1);
+        heap = newHeap;
     }
 
     public DSAHeapEntry remove()
     {
-
+        DSAHeapEntry captRoot = heap[0];
+        DSAHeapEntry[] newHeap = new DSAHeapEntry[heap.length-1];
+        if(newHeap.length > 0)
+        {
+            newHeap[0] = heap[heap.length-1];
+            for(int i = 1; i < heap.length - 1; i++)
+            {
+                newHeap[i] = heap[i];
+            }
+            newHeap = trickleDown(newHeap, 0, newHeap.length-1);
+            heap = newHeap;
+        }
+        return captRoot;
     }
 
     public void display()
@@ -40,7 +54,7 @@ public class DSAHeap
         return pHeap;
     }
 
-    private void trickleDown(DSAHeapEntry[] pHeap, int curIdx, int numItems)
+    private DSAHeapEntry[] trickleDown(DSAHeapEntry[] pHeap, int curIdx, int numItems)
     {
         int lChildIdx = curIdx * 2 + 1;
         int rChildIdx = lChildIdx + 1;
@@ -65,6 +79,7 @@ public class DSAHeap
             lChildIdx = curIdx * 2 + 1;
             rChildIdx = lChildIdx + 1;
         }
+        return pHeap;
     }
 
     private void swap(DSAHeapEntry[] pHeap, int idx1, int idx2)
@@ -74,4 +89,34 @@ public class DSAHeap
         pHeap[idx2] = temp;
     }
 
+
+    public DSAHeapEntry[] heapify(DSAHeapEntry[] heapArr, int numItems)
+    {
+        for(int ii = numItems/2; ii > -1; ii--)
+        {
+            trickleDown(heapArr, ii, numItems);
+        }
+        return heapArr;
+    }
+
+    public DSAHeapEntry[] heapSort()
+    {
+        DSAHeapEntry[] array = heap;
+        heapify(array, array.length);
+        for(int ii = array.length-1; ii > 0; ii--)
+        {
+            swap(array, 0, ii);
+            trickleDown(array, 0, ii);
+        }
+        heap = array;
+        return array;
+    }
+
+    public void print()
+    {
+        for(int i = 0; i < heap.length; i ++)
+        {
+            System.out.println(heap[i].getPriority() + " " + heap[i].getValue());
+        }
+    }
 }
