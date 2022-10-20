@@ -64,7 +64,7 @@ class Sorts
     // mergeSort - front-end for kick-starting the recursive algorithm
     public static void mergeSort(int[] A)
     {
-		mergeSortRecurse(A, A[0], A[A.length-1]);
+		mergeSortRecurse(A, 0, (A.length)-1);
     }//mergeSort()
     private static void mergeSortRecurse(int[] A, int leftIdx, int rightIdx)
     {
@@ -98,17 +98,17 @@ class Sorts
 			}
 			kk ++;
 		}
-		for(int i = ii; i<midIdx; i++)
+		for(int i = ii; i<midIdx+1; i++)
 		{
 			tempArr[kk] = A[i];
 			kk ++;
 		}
-		for(int j = jj; j <rightIdx; j++)
+		for(int j = jj; j <rightIdx+1; j++)
 		{
 			tempArr[kk] = A[j];
 			kk ++;
 		}
-		for(int k = leftIdx; k < rightIdx; k++)
+		for(int k = leftIdx; k < rightIdx+1; k++)
 		{
 			A[k] = tempArr[k-leftIdx];
 		}
