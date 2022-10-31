@@ -107,6 +107,8 @@ class SortsTestHarness
                         case 'b' : Sorts.bubbleSort(A); break;
                         case 's' : Sorts.selectionSort(A); break;
                         case 'q' : Sorts.quickSort(A); break;
+                        case 'e' : Sorts.quickSortMed3(A); break;
+                        case 'r' : Sorts.quickSortRandom(A); break;
                         case 'j' : Arrays.sort(A); break;    // Java's QuickSort
                         case 'm' : Sorts.mergeSort(A); break;
                         case 'i' : Sorts.insertionSort(A); break;

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /** 
 ** Software Technology 152
 ** Class to hold various static sort methods.
@@ -118,13 +120,109 @@ class Sorts
     // quickSort - front-end for kick-starting the recursive algorithm
     public static void quickSort(int[] A)
     {
+		quickSortRecurse(A, 0, A.length-1);
     }//quickSort()
+
+	public static void quickSortMed3(int[] A)
+    {
+		quickSortMed3Recurse(A, 0, A.length-1);
+    }//quickSort()
+
+	public static void quickSortRandom(int[] A)
+    {
+		quickSortRandomRecurse(A, 0, A.length-1);
+    }//quickSort()
+	
     private static void quickSortRecurse(int[] A, int leftIdx, int rightIdx)
     {
+		int pivotIdx, newPivotIdx;
+		if(rightIdx>leftIdx)
+		{
+			pivotIdx = (leftIdx + rightIdx) / 2;
+			newPivotIdx = doPartitioning(A, leftIdx, rightIdx, pivotIdx);
+
+			quickSortRecurse(A, leftIdx, newPivotIdx-1);
+			quickSortRecurse(A, newPivotIdx+1, rightIdx);
+		}
     }//quickSortRecurse()
+
+
+	private static void quickSortMed3Recurse(int[] A, int leftIdx, int rightIdx)
+    {
+		int pivotIdx, newPivotIdx, midIdx;
+		if(rightIdx>leftIdx)
+		{
+			midIdx = (leftIdx + rightIdx) / 2;
+			int leftVal = A[leftIdx];
+			int midVal = A[midIdx];
+			int rightVal = A[rightIdx];
+
+
+			if ((leftVal < midVal && midVal < rightVal) || (rightVal < midVal && midVal < leftVal))
+			{
+            	
+			}
+ 
+        // Checking for a
+        	else if ((midVal < leftVal && leftVal < rightVal) || (rightVal < leftVal && leftVal < midVal))
+        	{
+				A[leftIdx] = midVal;
+				A[midIdx] = leftVal;
+			}
+ 
+        	else
+			{
+        		A[rightIdx] = midVal;
+				A[midIdx] = rightIdx;
+			}
+
+			pivotIdx = A[midIdx];
+			newPivotIdx = doPartitioning(A, leftIdx, rightIdx, pivotIdx);
+
+			quickSortRecurse(A, leftIdx, newPivotIdx-1);
+			quickSortRecurse(A, newPivotIdx+1, rightIdx);
+		}
+    }//quickSortRecurse()
+
+	private static void quickSortRandomRecurse(int[] A, int leftIdx, int rightIdx)
+    {
+		int pivotIdx, newPivotIdx;
+		Random rand = new Random();
+		if(rightIdx>leftIdx)
+		{
+			pivotIdx = rand.nextInt(A.length-1);
+			newPivotIdx = doPartitioning(A, leftIdx, rightIdx, pivotIdx);
+
+			quickSortRecurse(A, leftIdx, newPivotIdx-1);
+			quickSortRecurse(A, newPivotIdx+1, rightIdx);
+		}
+    }//quickSortRecurse()
+
+
+
     private static int doPartitioning(int[] A, int leftIdx, int rightIdx, int pivotIdx)
     {
-		return 0;	// TEMP - Replace this when you implement QuickSort
+		int pivotVal = A[pivotIdx];
+		A[pivotIdx] = A[rightIdx];
+		A[rightIdx] = pivotVal;
+
+		int currIdx = leftIdx;
+
+		for(int i = leftIdx; i < rightIdx+1; i++)
+		{
+			if(A[i] < pivotVal)
+			{
+				int temp = A[i];
+				A[i] = A[currIdx];
+				A[currIdx] = temp;
+				currIdx ++;
+			}
+		}
+		int newPivIdx = currIdx;
+		A[rightIdx] = A[newPivIdx];
+		A[newPivIdx] = pivotVal;
+
+		return newPivIdx;	// TEMP - Replace this when you implement QuickSort
     }//doPartitioning
 
 
